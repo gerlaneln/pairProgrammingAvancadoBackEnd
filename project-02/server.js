@@ -12,13 +12,27 @@ Criação de um servidor na porta local 5000, utilizando o módulo http
 
 http.createServer((req, res) => {
     /*
-    Mostrando a página index.html no navegador, utilizando os módulos fs (para buscar e ler o arquivo na pasta public), path (criar o caminho do arquivo usando join), e http (mostrar a página no navegador usando end)
+    Fazendo tratamento dos arquivos servidos pelo servidor rodando na porta 5000.
     */
-    if(req.url === '/')
-        fs.readFile(path.join(__dirname, 'public', 'index.html'), (err, content) => {
-            if (err) throw err;
-            res.end(content);
-        });
+    
+    const file = req.url === '/' ? 'index.html' : req.url;
+
+    const filePath = path.join(__dirname, 'public', file);
+
+    console.log(file);
+
+    const extname = path.extname(filePath);
+
+    const allowedFileTypes = ['.html', '.css', '.js'];
+
+    const allowed = allowedFileTypes.find(item => item == extname);
+
+    if(!allowed) return 
+    
+    fs.readFile(filePath, (err, content) => {
+        if (err) throw err;
+        res.end(content);
+    });
 
 }).listen(5000, () => {console.log('Server is running.')});
 

@@ -1,0 +1,24 @@
+{
+  "name": "pairprogrammingavancadobackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node project-02/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gerlaneln/pairProgrammingAvancadoBackEnd.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gerlaneln/pairProgrammingAvancadoBackEnd/issues"
+  },
+  "homepage": "https://github.com/gerlaneln/pairProgrammingAvancadoBackEnd#readme",
+  "dependencies": {
+    "node-modules": "^1.0.1"
+  }
+}

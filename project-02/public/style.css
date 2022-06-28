@@ -1,9 +1,9 @@
 /*  */
-*{
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body{
+body {
     background-color: #e6e6e6;
 }
 
@@ -19,23 +19,23 @@ form {
     border: 1px solid #cccccc;
 }
 
-label{
+label {
     text-align: center;
 }
 
-input{
+input {
     margin: 2%;
     height: 2em;
-    width: 30em;
+    width: 100%;
     border-radius: 10px;
     border: 1px solid black;
 }
 
-input:focus{
+input:focus {
     border-color: #b3b3b3;
 }
 
-button{
+button.add {
     height: 2em;
     width: 10em;
     background-color: white;
@@ -44,10 +44,9 @@ button{
     cursor: pointer;
 }
 
-button:hover{
+button.add:hover {
     border-color: #b3b3b3;
 }
-
 
 .links {
     display: flex;
@@ -58,4 +57,31 @@ button:hover{
     padding: 5%;
     background-color: white;
     border: 1px solid #cccccc;
+}
+
+li {
+    padding: 3px;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover{
+    font-weight: bold;
+}
+
+.remove{
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    cursor: pointer;
+    color: #000000;
+}
+
+.remove:hover {
+    border-color:red;
+    font-weight: bold;
+    color: red;
 }

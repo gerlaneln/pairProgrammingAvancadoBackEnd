@@ -5,28 +5,17 @@ const ul = document.querySelector('ul');
 const input = document.querySelector('input');
 const form = document.querySelector('form');
 
-function addElement({ name, url }) {
-    const list = [];
-    const link = {
-        nome: name,
-        url: url
-    }
-    /*
-    Adiciona o link na lista que controla os elementos li na página index.html.
-    Dentro da função map, transforma cada item da lista em formato JSON, para que seja inserido
-    no elemento li de forma separada.
-    */
-    list.push(link);
-    list.map(function(item){
-        JSON.stringify(item);
-        let li = document.createElement('li');
-        li.appendChild(document.createElement('li')).textContent = `Nome: ${item.nome} - URL: ${item.url}`;
-        ul.appendChild(li);
-    });
+/*
+Função addElement usa os elementos digitados pelo usuário para criar um lista, acrescentando um botão para remoção dos nós desejados.
+*/
+function addElement({ name, url }) { 
+    let li = document.createElement('li');
+    li.appendChild(document.createElement('li')).innerHTML = `Nome: ${name} - URL: <a href="${url}">${url}</a> <button class="remove" onclick="removeElement(this)">&#9747;</button>`;
+    ul.appendChild(li);
 }
 
 function removeElement(element) {
-    //...
+    element.parentNode.parentNode.remove();
 }
 
 form.addEventListener('submit', (event) => {
