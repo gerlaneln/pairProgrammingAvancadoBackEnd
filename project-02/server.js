@@ -15,6 +15,7 @@ http.createServer((req, res) => {
     Fazendo tratamento dos arquivos servidos pelo servidor rodando na porta 5000.
     */
     
+    // tratamento, se tiver / retonar index.html
     const file = req.url === '/' ? 'index.html' : req.url;
 
     const filePath = path.join(__dirname, 'public', file);
