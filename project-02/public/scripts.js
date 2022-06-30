@@ -10,7 +10,8 @@ Função addElement usa os elementos digitados pelo usuário para criar um lista
 */
 function addElement({ name, url }) { 
     let li = document.createElement('li');
-    li.appendChild(document.createElement('strong')).innerHTML = `Nome: ${name} - URL: <a href="${url}">${url}</a> <button class="remove" onclick="removeElement(this)">&#9747;</button>`;
+    li.innerHTML = `Nome: ${name} - URL: <a href="${url}">${url}
+    </a> <button class="remove" onclick="removeElement(this)">&#9747;</button>`;
     ul.appendChild(li);
 }
 
