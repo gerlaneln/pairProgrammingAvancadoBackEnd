@@ -19,6 +19,12 @@ function writeFile(cb){
 // criando servidor na porta 3000 para API do projeto-02
 http.createServer((req, res) => {
 
+    //Tratamento do CORS
+    res.writeHead(
+        200,
+        {"Access-Control-Allow-Origin":"*"}
+    );
+
     console.log(URL.parse(req.url, true).query);
 //desestruturação da url para identificação dos parametros da query
     const { name, url, del } = URL.parse(req.url, true).query;

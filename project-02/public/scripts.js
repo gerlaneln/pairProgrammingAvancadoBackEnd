@@ -5,6 +5,17 @@ const ul = document.querySelector('ul');
 const input = document.querySelector('input');
 const form = document.querySelector('form');
 
+window.addEventListener('load', function(event){
+    load();
+});
+
+async function load(){
+    const res = await fetch('http://localhost:3000/')
+    .then(response => response.json())
+    .catch(err => console.log(err.message));
+    res.urls.map(url => addElement(url));
+}
+
 /*
 Função addElement usa os elementos digitados pelo usuário para criar um lista, acrescentando um botão para remoção dos nós desejados.
 */
