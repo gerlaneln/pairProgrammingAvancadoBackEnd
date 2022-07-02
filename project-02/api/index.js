@@ -1,3 +1,46 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const app = express();
+const cors = require('cors');
+const routes = require('./routes');
+
+/*
+Conexão com o banco de dados através do módulo mongoose através da string connect
+*/
+mongoose.connect('mongodb+srv://admin:TLHQk2IfqmQwsCwl@cluster0.imewt.mongodb.net/favorites?retryWrites=true&w=majority', { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.log(err));
+
+/*
+Cabeçalho de permissões do CORS
+*/
+var corsOptions = {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": true,
+    "optionsSuccessStatus": 204
+}
+
+/*
+Atribuição das políticas do CORS, criação da aplicação JSON, e utilização das rotas do arquivo routes.js
+*/
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(routes);
+
+/*
+Atribuição da porta onde a aplicação express estão sendo servida
+*/
+app.listen(3000, () => {
+    console.log(`Server is running on port 3000.`);
+});
+
+/*
+Código utilizando arquivo JSON e protocolo http para realizar a manipulação dos dados
+
 const http = require('http');
 const data = require('./urls.json');
 const URL = require('url');
@@ -20,10 +63,9 @@ function writeFile(cb){
 http.createServer((req, res) => {
 
     //Tratamento do CORS
-    res.writeHead(
-        200,
-        {"Access-Control-Allow-Origin":"*"}
-    );
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, DELETE, UPDATE');
+    res.setHeader('Access-Control-Max-Age', 2592000);
 
     console.log(URL.parse(req.url, true).query);
 //desestruturação da url para identificação dos parametros da query
@@ -43,3 +85,4 @@ http.createServer((req, res) => {
     return writeFile(message => res.end(message));
 
 }).listen(3000, () => console.log('API is running.'))
+*/

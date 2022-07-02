@@ -5,30 +5,74 @@ const ul = document.querySelector('ul');
 const input = document.querySelector('input');
 const form = document.querySelector('form');
 
-window.addEventListener('load', function(event){
-    load();
-});
-
-async function load(){
-    const res = await fetch('http://localhost:3000/')
-    .then(response => response.json())
-    .catch(err => console.log(err.message));
-    res.urls.map(url => addElement(url));
-}
+/*
+Carrega os dados presentes no banco de dados na abertura da página
+*/
+load();
 
 /*
-Função addElement usa os elementos digitados pelo usuário para criar um lista, acrescentando um botão para remoção dos nós desejados.
+Função load() faz a conexão com o banco de dados através do fetch, para buscar todas as entidades salvas
+e enviá-las para a função que as mostra como lista no frontend.
 */
-function addElement({ name, url }) { 
+function load() {
+    ul.innerHTML = '';
+    fetch('http://localhost:3000/')
+    .then(response => response.json())
+    .then(data => {
+        data.map(item => {
+            showElement({ item });
+        });
+    }).catch(err => console.log(err.message));
+};
+
+/*
+Função showElement() usa os elementos digitados pelo usuário para criar um lista, acrescentando um botão para remoção dos nós desejados.
+*/
+function showElement({ item }) {
     let li = document.createElement('li');
-    li.innerHTML = `Nome: ${name} - URL: <a href="${url}">${url}
-    </a> <button class="remove" onclick="removeElement(this)">&#9747;</button>`;
+    li.innerHTML = `<span hidden>${item._id}</span>Nome: <span>${item.nome}</span> - URL: <a href="${item.url}">${item.url}</a> <button class="remove" onclick="removeElement(this)">&#9747;</button>`;
     ul.appendChild(li);
 }
 
-function removeElement(element) {
-    if(confirm("Tem certeza que seja apagar?"))
-        element.parentNode.parentNode.remove();
+/*
+Função addElement() recebe os elementos digitados pelo usuário e os envia para o backend para serem
+adicionados no banco de dados através do método fetch
+*/
+function addElement({ name, url }){
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome: name, url: url})
+    };
+    fetch('http://localhost:3000/register', requestOptions)
+    .then(response => {
+        if (response.status == 200){
+            confirm('Link inserido com sucesso.');
+            load();
+        }else{
+            confirm('Falha ao adicionar link.')
+        }
+    })
+    .catch(err => console.log(err));
+}
+
+/*
+Função removeElement() pega o id armazenado em um hidden span e o envia para o backend para ser
+deletado no banco de dados
+*/
+async function removeElement(element) {
+    const id = element.parentNode.children[0].textContent;
+    if (confirm("Tem certeza que seja apagar?")) {
+        fetch(`http://localhost:3000/delete/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.status == 200){
+                    confirm('Link deletado com sucesso.');
+                    load();
+                }else{
+                    confirm('Falha ao deletar link.')
+                }
+            }).catch(err => console.log(err.message));
+    }
 }
 
 form.addEventListener('submit', (event) => {
@@ -42,7 +86,7 @@ form.addEventListener('submit', (event) => {
     /*
     Verifica se o campo de input está vazio.
     */
-    if (!value) 
+    if (!value)
         return alert('Preencha o campo!');
 
     /*
@@ -53,18 +97,18 @@ form.addEventListener('submit', (event) => {
     /*
     Validação da URL inserida, se ela foi inserida e se está no formato padrão.
     */
-    if (!url) 
+    if (!url)
         return alert('O texto não está formatado da maneira correta.');
-    
-    // Antes !/^http/, não estava funcionando
+
     //Expressão REGEX: testa se a string não começa com http
-        //^ No inicio buca a ?! negação, .* da combinação de qualquer caracter entre 0-ilimitadas vezes
-    if (/^(?!.*http)/.test(url)) 
+    //^ No inicio buca a ?! negação, .* da combinação de qualquer caracter entre 0-ilimitadas vezes
+    if (/^(?!.*http)/.test(url))
         return alert('Digite a url da maneira correta.');
+        
     /*
     Se os valores seguirem o formato estabelecido, o elemento é adicionado e o campo é esvaziado.
     */
     addElement({ name, url });
 
     input.value = '';
-})
+});
